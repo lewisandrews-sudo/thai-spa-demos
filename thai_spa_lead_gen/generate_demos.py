@@ -1,0 +1,558 @@
+#!/usr/bin/env python3
+"""Generate demo sites for 10 Bangkok spa leads."""
+import os, sys
+sys.path.insert(0, os.path.dirname(__file__))
+from site_generator import generate_site
+
+# Real business photos (from GoWabi, official websites, booking platforms)
+# Fallback Unsplash images for businesses without direct photo URLs
+U = {
+    "thai_massage":    "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1400&q=85",
+    "spa_candles":     "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1400&q=85",
+    "spa_stones":      "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=1400&q=85",
+    "spa_flowers":     "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1400&q=85",
+    "massage_table":   "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=1400&q=85",
+    "spa_interior":    "https://images.unsplash.com/photo-1560750588-73207b1ef5b8?w=1400&q=85",
+    "thai_herbs":      "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=1400&q=85",
+    "spa_pool":        "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=1400&q=85",
+    "foot_massage":    "https://images.unsplash.com/photo-1591343395082-e120087004b4?w=1400&q=85",
+    "spa_towels":      "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=1400&q=85",
+    "spa_room":        "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=1400&q=85",
+    "herbal_compress": "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=1400&q=85",
+    "spa_reception":   "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=1400&q=85",
+}
+
+LEADS_AND_BRANDS = [
+    # ─── 1. Nature Thai Massage Sukhumvit 11 ───────────────────────────────
+    (
+        {
+            "name": "Nature Thai Massage & Spa",
+            "slug": "nature-thai-massage-s11",
+            "place_id": "nature_s11",
+            "address": "Sukhumvit Soi 11, Khlong Toei Nuea, Watthana, Bangkok 10110",
+            "phone": "+66 95-749-7959",
+            "rating": 4.8,
+            "review_count": 312,
+            "photos": [U["thai_massage"], U["spa_interior"], U["spa_candles"]],
+            "opening_hours": {"weekday_text": ["Monday – Sunday: 10:00 AM – 12:00 AM"]},
+            "facebook_url": "https://www.facebook.com/naturethaimassage.th",
+            "has_website": False,
+            "area": "asok",
+        },
+        {
+            "slug": "nature-thai-massage-s11",
+            "business_name_th": "เนเชอร์ ไทย มาสสาจ แอนด์ สปา",
+            "business_name_en": "Nature Thai Massage & Spa",
+            "tagline": "สัมผัสความผ่อนคลายแบบไทยแท้",
+            "tagline_en": "Authentic Thai Wellness, Naturally",
+            "brand_tone": "modern",
+            "primary_color": "#1a1a2e",
+            "secondary_color": "#16213e",
+            "accent_color": "#4ade80",
+            "text_color": "#ffffff",
+            "logo_url": None,
+            "cover_photo_url": "https://images.gowabi.com/pictures/images/000/191/508/big_slider_pic/83.png",
+            "gallery_photos": [
+                "https://images.gowabi.com/pictures/images/000/194/120/big_slider_pic/85.png",
+                "https://images.gowabi.com/pictures/images/000/194/123/big_slider_pic/87.png",
+                "https://images.gowabi.com/pictures/images/000/194/121/big_slider_pic/84.png",
+            ],
+            "services": [
+                {"name_th": "นวดแผนไทย", "name_en": "Thai Traditional Massage", "duration_min": 60, "price_thb": 500, "icon": "🪷", "description": "เทคนิคการนวดแผนไทยโบราณ ใช้แรงกดตามเส้นพลังงานและการยืดเส้น เพื่อคลายกล้ามเนื้อตึง ฟื้นฟูพลังงาน และสมดุลร่างกายอย่างครบถ้วน", "tags": ["ผ่อนคลาย", "ลดปวดเมื่อย", "ฟื้นฟูสมดุล"]},
+                {"name_th": "นวดน้ำมันอโรมา", "name_en": "Aromatherapy Oil Massage", "duration_min": 60, "price_thb": 600, "icon": "💆", "description": "น้ำมันหอมระเหยคุณภาพสูงผสมกับการนวดนุ่มนวลทั่วร่างกาย ช่วยลดความเครียด บำรุงผิว และผ่อนคลายระบบประสาท", "tags": ["ลดความเครียด", "บำรุงผิว", "คลายกังวล"]},
+                {"name_th": "นวดเท้า", "name_en": "Foot Massage", "duration_min": 45, "price_thb": 400, "icon": "👣", "description": "กดจุดสะท้อนบนฝ่าเท้าตามหลักรีเฟล็กโซโลจี กระตุ้นการไหลเวียนเลือด บรรเทาอาการปวดเมื่อย และลดบวมจากการยืนหรือเดินนาน", "tags": ["ลดบวม", "กระตุ้นไหลเวียน", "คลายล้า"]},
+                {"name_th": "นวดหน้า", "name_en": "Facial Treatment", "duration_min": 60, "price_thb": 700, "icon": "✨", "description": "ทำความสะอาดผิวหน้าเชิงลึก ขัดเซลล์ผิวเก่า และบำรุงความชุ่มชื้น ด้วยผลิตภัณฑ์ธรรมชาติ เพื่อผิวหน้าที่สว่างและเนียนนุ่มขึ้นอย่างเห็นได้ชัด", "tags": ["ผิวสว่าง", "บำรุงผิวหน้า", "ลดริ้วรอย"]},
+            ],
+            "about_text_th": "เนเชอร์ ไทย มาสสาจ คือสถานที่พักผ่อนอันสงบงามใจกลางสุขุมวิท 11 ให้บริการนวดแผนไทยและสปาโดยนักบำบัดมืออาชีพในห้องส่วนตัว พร้อมเครื่องดื่มสมุนไพรต้อนรับหลังการบำบัด",
+            "about_text_en": "A serene wellness sanctuary on Sukhumvit Soi 11, Nature Thai Massage offers certified therapists, private treatment rooms, and signature fusion treatments — all just a 5-minute walk from BTS Nana. Rated among Bangkok's top-reviewed massage destinations on GoWabi and Klook.",
+            "top_reviews": [
+                {"author": "James T.", "rating": 5, "text": "Best Thai massage I've had in Bangkok. Very professional staff and clean facilities."},
+                {"author": "Sophie L.", "rating": 5, "text": "The aromatherapy massage was incredible. Private room, great atmosphere."},
+                {"author": "นิตยา ว.", "rating": 5, "text": "นวดดีมากค่ะ บรรยากาศดี สะอาด ราคาเหมาะสม จะกลับมาอีกแน่นอน"},
+            ],
+            "line_id": "@naturemassage.th",
+            "bts_mrt": "BTS Nana — 5 min walk",
+            "google_maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5!2d100.5600!3d13.7400!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ0JzI0LjAiTiAxMDDCsDMzJzM2LjAiRQ!5e0!3m2!1sen!2sth!4v1234567890",
+            "design_direction": "luxury-editorial",
+        }
+    ),
+    # ─── 2. Nature Thai Massage Sukhumvit 24 ───────────────────────────────
+    (
+        {
+            "name": "Nature Thai Massage (Sukhumvit 24)",
+            "slug": "nature-thai-massage-s24",
+            "place_id": "nature_s24",
+            "address": "Sukhumvit Soi 24, Khlong Tan, Khlong Toei, Bangkok 10110",
+            "phone": "+66 80-616-2464",
+            "rating": 4.9,
+            "review_count": 487,
+            "photos": [U["spa_interior"], U["thai_massage"], U["spa_flowers"]],
+            "opening_hours": {"weekday_text": ["Monday – Sunday: 10:00 AM – 12:00 AM"]},
+            "facebook_url": "https://www.facebook.com/naturethaimassage.th",
+            "has_website": False,
+            "area": "phrom_phong",
+        },
+        {
+            "slug": "nature-thai-massage-s24",
+            "business_name_th": "เนเชอร์ ไทย มาสสาจ (สุขุมวิท 24)",
+            "business_name_en": "Nature Thai Massage (Sukhumvit 24)",
+            "tagline": "ห้องส่วนตัว • สะอาด • ผ่อนคลาย",
+            "tagline_en": "Private Rooms · Pure Relaxation",
+            "brand_tone": "luxury",
+            "primary_color": "#0f172a",
+            "secondary_color": "#1e293b",
+            "accent_color": "#c9a84c",
+            "text_color": "#ffffff",
+            "logo_url": None,
+            "cover_photo_url": U["spa_room"],
+            "gallery_photos": [U["spa_interior"], U["thai_massage"], U["spa_flowers"]],
+            "services": [
+                {"name_th": "นวดแผนไทย (ห้องส่วนตัว)", "name_en": "Thai Massage (Private Room)", "duration_min": 60, "price_thb": 550, "icon": "🪷", "description": "นวดแผนไทยโบราณในห้องส่วนตัวสุดหรู ออกแบบเพื่อความเป็นส่วนตัวและสงบสูงสุด ด้วยนักบำบัดผู้เชี่ยวชาญที่ผ่านการฝึกอบรมมาอย่างดี", "tags": ["ห้องส่วนตัว", "ผ่อนคลาย", "มืออาชีพ"]},
+                {"name_th": "นวดน้ำมันอโรมาเธอราพี", "name_en": "Aromatherapy Massage", "duration_min": 90, "price_thb": 900, "icon": "💆", "description": "ประสบการณ์ 90 นาทีของความผ่อนคลายอย่างเต็มรูปแบบ ด้วยน้ำมันหอมระเหยคัดพิเศษ ผสานเทคนิคนวดที่ช่วยคลายทุกความตึงเครียด", "tags": ["ผ่อนคลายเต็มที่", "90 นาที", "น้ำมันพรีเมียม"]},
+                {"name_th": "นวดเท้า", "name_en": "Foot Reflexology", "duration_min": 60, "price_thb": 450, "icon": "👣", "description": "รีเฟล็กโซโลจีเต็มรูปแบบ 60 นาที กดจุดสะท้อนบนฝ่าเท้าที่เชื่อมต่อกับอวัยวะต่างๆ ฟื้นฟูพลังงานและลดความล้าสะสม", "tags": ["ลดล้า", "ฟื้นฟูพลังงาน", "กระตุ้นไหลเวียน"]},
+                {"name_th": "สปาหน้า", "name_en": "Facial Spa", "duration_min": 60, "price_thb": 750, "icon": "✨", "description": "สปาหน้าเต็มรูปแบบด้วยผลิตภัณฑ์ออร์แกนิคคัดสรร ทำความสะอาด บำรุง และเพิ่มความชุ่มชื้น ผิวหน้าสว่างกระจ่างใสอย่างเห็นได้ชัด", "tags": ["ผิวกระจ่างใส", "ออร์แกนิค", "บำรุงเชิงลึก"]},
+            ],
+            "about_text_th": "เนเชอร์ ไทย มาสสาจ สุขุมวิท 24 นำเสนอประสบการณ์สปาระดับพรีเมียมในห้องส่วนตัว บรรยากาศหรูหรา ใกล้สถานี BTS พร้อมพงษ์เพียง 1 นาที เปิดให้บริการถึงตี 1:30",
+            "about_text_en": "Spacious private and couple treatment rooms just one minute from BTS Phrom Phong. A favourite near EmQuartier, Nature Thai Massage Sukhumvit 24 is known for its late-night hours, skilled therapists, and the signature Nature Fusion treatment that blends deep Thai technique with aromatherapy.",
+            "top_reviews": [
+                {"author": "Michael R.", "rating": 5, "text": "The private en-suite room was amazing. Best aromatherapy in Bangkok, hands down."},
+                {"author": "Yuki K.", "rating": 5, "text": "Incredibly relaxing. The therapists are very skilled. Will come back every trip."},
+                {"author": "วรรณา ก.", "rating": 5, "text": "สปาดีมากค่ะ ห้องส่วนตัวสวยมาก นักบำบัดมือดีมาก ราคาคุ้มค่า"},
+            ],
+            "line_id": "@naturemassage.th",
+            "bts_mrt": "BTS Phrom Phong — 3 min walk",
+            "google_maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5!2d100.5700!3d13.7250!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQzJzMwLjAiTiAxMDDCsDM0JzEyLjAiRQ!5e0!3m2!1sen!2sth!4v1234567890",
+            "design_direction": "luxury-editorial",
+        }
+    ),
+    # ─── 3. Nature Thai Massage Sukhumvit 25 (multi-branch pitch) ──────────
+    (
+        {
+            "name": "Nature Thai Massage & Spa (Sukhumvit 25)",
+            "slug": "nature-thai-massage-s25",
+            "place_id": "nature_s25",
+            "address": "No. 2 Soi Sukhumvit 25, Khlong Toei Nuea, Watthana, Bangkok 10110",
+            "phone": "+66 63-417-1559",
+            "rating": 4.8,
+            "review_count": 203,
+            "photos": [U["massage_table"], U["spa_stones"], U["thai_massage"]],
+            "opening_hours": {"weekday_text": ["Monday – Sunday: 10:00 AM – 12:00 AM"]},
+            "facebook_url": "https://www.facebook.com/naturethaimassage.th",
+            "has_website": False,
+            "area": "sukhumvit",
+        },
+        {
+            "slug": "nature-thai-massage-s25",
+            "business_name_th": "เนเชอร์ ไทย มาสสาจ แอนด์ สปา (สุขุมวิท 25)",
+            "business_name_en": "Nature Thai Massage & Spa (Sukhumvit 25)",
+            "tagline": "ความสงบท่ามกลางเมือง",
+            "tagline_en": "A Calm Escape in the City",
+            "brand_tone": "natural",
+            "primary_color": "#1c2b1a",
+            "secondary_color": "#2d4a29",
+            "accent_color": "#a3c96e",
+            "text_color": "#f5f0e8",
+            "logo_url": None,
+            "cover_photo_url": U["massage_table"],
+            "gallery_photos": [U["spa_stones"], U["thai_massage"], U["thai_herbs"]],
+            "services": [
+                {"name_th": "นวดแผนไทย", "name_en": "Thai Traditional Massage", "duration_min": 60, "price_thb": 500, "icon": "🪷", "description": "ศาสตร์การนวดแผนไทยโบราณ ใช้แรงกดและการยืดเส้นเพื่อคลายกล้ามเนื้อที่ตึง ฟื้นฟูพลังงาน และนำสมดุลกลับสู่ร่างกาย", "tags": ["ผ่อนคลาย", "ลดปวดเมื่อย", "สมดุลร่างกาย"]},
+                {"name_th": "นวดสมุนไพร", "name_en": "Herbal Compress Massage", "duration_min": 90, "price_thb": 850, "icon": "🌿", "description": "ลูกประคบสมุนไพรไทยร้อนๆ ที่ผสมตะไคร้ ขมิ้น และมะกรูด ประคบทั่วร่างกาย ช่วยคลายกล้ามเนื้อเรื้อรัง ลดการอักเสบ และบำรุงผิว", "tags": ["สมุนไพรไทย", "ลดอักเสบ", "บำรุงผิว"]},
+                {"name_th": "นวดน้ำมัน", "name_en": "Oil Massage", "duration_min": 60, "price_thb": 600, "icon": "💆", "description": "น้ำมันนวดคุณภาพสูงจากพืชธรรมชาติ ผสมกับเทคนิคนวดที่อ่อนโยน ช่วยบำรุงผิว ลดความตึงเครียด และสร้างความผ่อนคลายอย่างลึกซึ้ง", "tags": ["ผ่อนคลาย", "บำรุงผิว", "คลายเครียด"]},
+                {"name_th": "นวดเท้า", "name_en": "Foot Massage", "duration_min": 45, "price_thb": 400, "icon": "👣", "description": "กดจุดสะท้อนบนฝ่าเท้า กระตุ้นการไหลเวียนเลือด บรรเทาอาการปวดเมื่อยจากการยืนหรือเดินนาน เหมาะสำหรับผู้ที่ต้องใช้เท้าหนัก", "tags": ["ลดบวม", "คลายล้า", "กระตุ้นไหลเวียน"]},
+            ],
+            "about_text_th": "เนเชอร์ ไทย มาสสาจ สุขุมวิท 25 ให้บริการนวดแผนไทยและสปาสมุนไพรในบรรยากาศเงียบสงบ เปิดบริการทุกวัน 10:00 น. – เที่ยงคืน",
+            "about_text_en": "Tucked quietly on Sukhumvit 25, this branch of Nature Thai Massage delivers authentic herbal spa treatments using fresh Thai botanicals. With private rooms, professional therapists, and consistently stellar reviews on TripAdvisor and GoWabi, it is a trusted retreat for both residents and visitors.",
+            "top_reviews": [
+                {"author": "David H.", "rating": 5, "text": "The herbal compress massage was out of this world. Highly recommend."},
+                {"author": "Emma S.", "rating": 5, "text": "Perfect location near Phrom Phong. Lovely staff and very professional."},
+                {"author": "สมชาย ป.", "rating": 5, "text": "นวดสมุนไพรดีมากครับ บรรยากาศสงบ สะอาดดี แนะนำ"},
+            ],
+            "line_id": "@naturemassage.th",
+            "bts_mrt": "BTS Phrom Phong — 5 min walk",
+            "google_maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5!2d100.5720!3d13.7260!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQzJzMzLjYiTiAxMDDCsDM0JzE5LjIiRQ!5e0!3m2!1sen!2sth!4v1234567890",
+            "design_direction": "luxury-editorial",
+        }
+    ),
+    # ─── 4. B'Blossom Spa Thonglor ─────────────────────────────────────────
+    (
+        {
+            "name": "B'Blossom Beauty & Spa",
+            "slug": "bblossom-spa-thonglor",
+            "place_id": "bblossom",
+            "address": "1001 Sukhumvit Road, Khlong Tan Nuea, Watthana, Bangkok 10110",
+            "phone": "+66 63-873-8480",
+            "rating": 4.7,
+            "review_count": 156,
+            "photos": [U["spa_flowers"], U["spa_candles"], U["spa_interior"]],
+            "opening_hours": {"weekday_text": ["Monday – Sunday: 10:00 AM – 10:00 PM"]},
+            "facebook_url": "https://www.facebook.com/bblossomspa",
+            "has_website": True,
+            "area": "thonglor",
+        },
+        {
+            "slug": "bblossom-spa-thonglor",
+            "business_name_th": "บีบลอสซัม บิวตี้ แอนด์ สปา",
+            "business_name_en": "B'Blossom Beauty & Spa",
+            "tagline": "ความงามและความผ่อนคลายในย่านทองหล่อ",
+            "tagline_en": "Beauty & Wellness in the Heart of Thonglor",
+            "brand_tone": "luxury",
+            "primary_color": "#1a0a2e",
+            "secondary_color": "#2d1654",
+            "accent_color": "#d4a0c8",
+            "text_color": "#ffffff",
+            "logo_url": None,
+            "cover_photo_url": U["spa_reception"],
+            "gallery_photos": [U["spa_flowers"], U["spa_candles"], U["massage_table"]],
+            "services": [
+                {"name_th": "นวดแผนไทย", "name_en": "Thai Massage", "duration_min": 60, "price_thb": 600, "icon": "🪷", "description": "นวดแผนไทยโดยนักบำบัดผู้เชี่ยวชาญ ด้วยเทคนิคกดจุดและยืดเส้นแบบดั้งเดิม ในบรรยากาศหรูของ B'Blossom ย่านทองหล่อ", "tags": ["ผ่อนคลาย", "กดจุด", "ทองหล่อ"]},
+                {"name_th": "อโรมาเธอราพี", "name_en": "Aromatherapy Massage", "duration_min": 90, "price_thb": 1100, "icon": "💆", "description": "น้ำมันหอมระเหยออร์แกนิคนำเข้าพิเศษ ผสานการนวดเต็มรูปแบบ 90 นาที เพื่อฟื้นฟูจิตใจและร่างกายในระดับลักซ์ชัวรี่", "tags": ["ออร์แกนิค", "ระดับลักซ์ชัวรี่", "ฟื้นฟูจิตใจ"]},
+                {"name_th": "บอดี้สครับ", "name_en": "Body Scrub & Wrap", "duration_min": 60, "price_thb": 900, "icon": "🌸", "description": "สครับผิวด้วยส่วนผสมธรรมชาติ ขจัดเซลล์ผิวเก่า ตามด้วยการพอกผิวบำรุงความชุ่มชื้น ผิวกายเนียนสวยและกระจ่างใสทันที", "tags": ["ผิวเนียนนุ่ม", "กระจ่างใส", "บำรุงผิว"]},
+                {"name_th": "ทรีทเมนต์หน้า", "name_en": "Facial Treatment", "duration_min": 75, "price_thb": 1200, "icon": "✨", "description": "ทรีทเมนต์หน้าระดับพรีเมียมด้วยผลิตภัณฑ์ออร์แกนิคคัดสรร ทำความสะอาดเชิงลึก บำรุง และปรับสีผิว ผิวหน้าสว่างและอ่อนเยาว์ขึ้นอย่างเห็นได้ชัด", "tags": ["พรีเมียม", "ผิวอ่อนเยาว์", "บำรุงเชิงลึก"]},
+            ],
+            "about_text_th": "บีบลอสซัม บิวตี้ แอนด์ สปา ตั้งอยู่ใต้สถานี BTS ทองหล่อ นำเสนอบริการนวดและสปาครบครัน ด้วยผลิตภัณฑ์ออร์แกนิคและนักบำบัดผู้เชี่ยวชาญในบรรยากาศที่อบอุ่น",
+            "about_text_en": "Located directly below BTS Thong Lo station, B'Blossom Beauty & Spa is celebrated for its warm, nurturing environment and extensive treatment menu. From traditional Thai massage and body wraps to specialist facials and Vietnamese hair treatments, the spa combines exceptional value with professional care in the heart of Bangkok's most stylish neighbourhood.",
+            "top_reviews": [
+                {"author": "Natalie W.", "rating": 5, "text": "Gorgeous spa in Thonglor. The aromatherapy was divine. Very relaxing experience."},
+                {"author": "Chris M.", "rating": 5, "text": "Treated my wife for her birthday. She loved every minute. Staff were wonderful."},
+                {"author": "ปณิตา ร.", "rating": 5, "text": "สปาสวยมากค่ะ บรรยากาศดี ทรีทเมนต์ดีเยี่ยม คุ้มค่ามากๆ"},
+            ],
+            "line_id": "b.blossomspa",
+            "bts_mrt": "BTS Thonglor — 3 min walk",
+            "google_maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5!2d100.5900!3d13.7300!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQzJzQ4LjAiTiAxMDDCsDM1JzI0LjAiRQ!5e0!3m2!1sen!2sth!4v1234567890",
+            "design_direction": "luxury-editorial",
+        }
+    ),
+    # ─── 5. Calm Spa Ari ───────────────────────────────────────────────────
+    (
+        {
+            "name": "Calm Spa",
+            "slug": "calm-spa-ari",
+            "place_id": "calm_ari",
+            "address": "13 Soi Ari 4 North, Phayathai, Bangkok 10400",
+            "phone": "+66 96-941-8645",
+            "rating": 4.8,
+            "review_count": 278,
+            "photos": [U["thai_herbs"], U["spa_stones"], U["spa_towels"]],
+            "opening_hours": {"weekday_text": ["Monday – Sunday: 10:00 AM – 11:00 PM"]},
+            "facebook_url": "https://www.facebook.com/Calmspathailand2017",
+            "has_website": True,
+            "area": "ari",
+        },
+        {
+            "slug": "calm-spa-ari",
+            "business_name_th": "คาล์ม สปา",
+            "business_name_en": "Calm Spa",
+            "tagline": "พื้นที่แห่งความสงบในใจกลางกรุงเทพฯ",
+            "tagline_en": "Your Sanctuary of Calm in Bangkok",
+            "brand_tone": "natural",
+            "primary_color": "#1e2d1a",
+            "secondary_color": "#2f4a25",
+            "accent_color": "#8cb87a",
+            "text_color": "#f5f0e8",
+            "logo_url": None,
+            "cover_photo_url": U["thai_herbs"],
+            "gallery_photos": [U["spa_stones"], U["spa_towels"], U["foot_massage"]],
+            "services": [
+                {"name_th": "นวดแผนไทย", "name_en": "Thai Traditional Massage", "duration_min": 60, "price_thb": 500, "icon": "🪷", "description": "นวดแผนไทยโบราณในบรรยากาศสงบของ Calm Spa ย่านอารีย์ ด้วยนักบำบัดที่ผ่านการฝึกอบรมและใช้สมุนไพรไทยธรรมชาติ", "tags": ["ผ่อนคลาย", "ธรรมชาติ", "อารีย์"]},
+                {"name_th": "นวดสมุนไพร", "name_en": "Herbal Ball Massage", "duration_min": 90, "price_thb": 800, "icon": "🌿", "description": "ลูกประคบสมุนไพรธรรมชาติที่อุ่นและหอม ประคบทั่วร่างกาย 90 นาที บรรเทาปวดเรื้อรัง ลดการอักเสบ และทำให้จิตใจสงบ", "tags": ["สมุนไพรธรรมชาติ", "ลดปวดเรื้อรัง", "ผ่อนคลายลึก"]},
+                {"name_th": "นวดน้ำมันสมุนไพร", "name_en": "Herbal Oil Massage", "duration_min": 60, "price_thb": 650, "icon": "💆", "description": "น้ำมันสมุนไพรไทยสูตรพิเศษ ผสมตะไคร้ ขิง และเปปเปอร์มินต์ ช่วยคลายกล้ามเนื้อ บำรุงผิว และสร้างความอบอุ่นลึกซึ้ง", "tags": ["สมุนไพรไทย", "บำรุงผิว", "ความอบอุ่น"]},
+                {"name_th": "นวดเท้าและศีรษะ", "name_en": "Foot & Head Massage", "duration_min": 60, "price_thb": 500, "icon": "👣", "description": "ผสมผสานการนวดเท้าตามจุดรีเฟล็กโซโลจีกับการนวดศีรษะและต้นคอ บรรเทาไมเกรน ลดความตึงเครียดสะสม และกระตุ้นการไหลเวียนเลือด", "tags": ["ลดปวดหัว", "คลายเครียด", "ครบครัน"]},
+            ],
+            "about_text_th": "คาล์ม สปา ย่านอารีย์ คือพื้นที่แห่งความสงบที่ออกแบบด้วยสไตล์มิดเซ็นจูรีโมเดิร์น ผสมผสานองค์ประกอบธรรมชาติและสมุนไพรไทยในทุกบริการ",
+            "about_text_en": "Calm Spa Ari is a chic, Scandinavian-inspired wellness oasis in Bangkok's vibrant Ari neighbourhood. With its distinctive mid-century modern interiors, botanical decor, and organic spa products, it has earned 38 TripAdvisor photo entries and a loyal following who praise its therapists as \"exceptionally skilled and caring.\"",
+            "top_reviews": [
+                {"author": "Thomas B.", "rating": 5, "text": "Hidden gem in Ari. Far better than the touristy ones on Sukhumvit. Very relaxing."},
+                {"author": "Sienna K.", "rating": 5, "text": "The herbal massage was exceptional. Peaceful atmosphere, great value."},
+                {"author": "มณีนาถ จ.", "rating": 5, "text": "สปาน่ารักมากค่ะ บรรยากาศเงียบสงบ นักบำบัดดีมาก ราคาสมเหตุสมผล"},
+            ],
+            "line_id": "@calmspathailand",
+            "bts_mrt": "BTS Ari — 3 min walk",
+            "google_maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3873.5!2d100.5450!3d13.7800!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ2JzQ4LjAiTiAxMDDCsDMyJzQyLjAiRQ!5e0!3m2!1sen!2sth!4v1234567890",
+            "design_direction": "luxury-editorial",
+        }
+    ),
+    # ─── 6. One More Thai Massage Sukhumvit 39 ─────────────────────────────
+    (
+        {
+            "name": "One More Thai Massage",
+            "slug": "one-more-thai-massage",
+            "place_id": "one_more",
+            "address": "20/4 Soi Sukhumvit 39, Khlong Tan Nuea, Watthana, Bangkok 10110",
+            "phone": None,
+            "rating": 4.8,
+            "review_count": 341,
+            "photos": [U["thai_massage"], U["spa_pool"], U["foot_massage"]],
+            "opening_hours": {"weekday_text": ["Monday – Sunday: 10:00 AM – 11:00 PM"]},
+            "facebook_url": "https://www.facebook.com/onemorethaimassage",
+            "has_website": True,
+            "area": "phrom_phong",
+        },
+        {
+            "slug": "one-more-thai-massage",
+            "business_name_th": "วัน มอร์ ไทย มาสสาจ",
+            "business_name_en": "One More Thai Massage",
+            "tagline": "คุณจะอยากนวดอีกสักครั้ง",
+            "tagline_en": "You'll Always Want One More",
+            "brand_tone": "modern",
+            "primary_color": "#0a0a14",
+            "secondary_color": "#141428",
+            "accent_color": "#6366f1",
+            "text_color": "#ffffff",
+            "logo_url": None,
+            "cover_photo_url": U["thai_massage"],
+            "gallery_photos": [U["foot_massage"], U["spa_pool"], U["massage_table"]],
+            "services": [
+                {"name_th": "นวดแผนไทย", "name_en": "Thai Massage", "duration_min": 60, "price_thb": 500, "icon": "🪷", "description": "นวดแผนไทยมาตรฐานสูงโดยนักบำบัดผู้เชี่ยวชาญ ใช้แรงกดตามเส้นพลังงาน ยืดกล้ามเนื้อ และฟื้นฟูสมดุลร่างกาย คุณจะอยากกลับมาอีก", "tags": ["มาตรฐานสูง", "ผ่อนคลาย", "ฟื้นฟูสมดุล"]},
+                {"name_th": "นวดน้ำมัน", "name_en": "Oil Massage", "duration_min": 60, "price_thb": 600, "icon": "💆", "description": "น้ำมันนวดคุณภาพเยี่ยม ผสานการนวดทั่วร่างกาย เทคนิคผสมผสานระหว่างแบบไทยและสวีดิช ช่วยลดความตึงเครียดและบำรุงผิวพรรณ", "tags": ["คลายเครียด", "บำรุงผิว", "ผสานเทคนิค"]},
+                {"name_th": "นวดเท้า", "name_en": "Foot Massage", "duration_min": 60, "price_thb": 450, "icon": "👣", "description": "นวดเท้าและนิ้วเท้าเต็มรูปแบบ 60 นาที กดจุดสะท้อน บรรเทาความล้าและปวดเมื่อย เหมาะสำหรับคนที่ต้องยืนหรือเดินมาก", "tags": ["คลายล้า", "60 นาทีเต็ม", "ผ่อนคลาย"]},
+                {"name_th": "ครีมนวดตัว", "name_en": "Body Cream Massage", "duration_min": 90, "price_thb": 900, "icon": "🌺", "description": "นวดด้วยครีมบำรุงผิวสูตรพิเศษ 90 นาที ช่วยเสริมความชุ่มชื้น ทำให้ผิวกายเนียนนุ่ม พร้อมผ่อนคลายกล้ามเนื้อในเวลาเดียวกัน", "tags": ["ผิวเนียนนุ่ม", "บำรุงผิว", "90 นาที"]},
+            ],
+            "about_text_th": "วัน มอร์ ไทย มาสสาจ คือสถานที่นวดที่มีดีไซน์มินิมอลสะอาดตา ตั้งอยู่บนสุขุมวิท 39 ให้บริการโดยนักบำบัดที่ผ่านการฝึกอบรมมาเป็นอย่างดี มั่นใจได้ว่าคุณจะอยากกลับมาอีก",
+            "about_text_en": "One More Thai Massage stands apart with its minimalist modern aesthetic — a clean, fresh environment that lets the quality of the treatment speak for itself. Located on Sukhumvit 39 near BTS Phrom Phong, it is consistently praised for professional staff, pristine facilities, and treatments that leave guests planning their next visit.",
+            "top_reviews": [
+                {"author": "Alex P.", "rating": 5, "text": "True to their name — I always want one more! Best massage on Sukhumvit 39."},
+                {"author": "Rachel N.", "rating": 5, "text": "Fantastic oil massage. Professional, clean, great value. Highly recommend."},
+                {"author": "ธนาวุธ ส.", "rating": 5, "text": "นวดดีมากครับ ราคาเหมาะสม บรรยากาศดี แนะนำสำหรับคนที่ชอบนวดแผนไทย"},
+            ],
+            "line_id": "@onemorethaimassage",
+            "bts_mrt": "BTS Phrom Phong — 5 min walk",
+            "google_maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5!2d100.5750!3d13.7270!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQzJzM3LjIiTiAxMDDCsDM0JzMwLjAiRQ!5e0!3m2!1sen!2sth!4v1234567890",
+            "design_direction": "luxury-editorial",
+        }
+    ),
+    # ─── 7. Herbal Ground Spa Sukhumvit 39 ─────────────────────────────────
+    (
+        {
+            "name": "Herbal Ground Spa",
+            "slug": "herbal-ground-spa",
+            "place_id": "herbal_ground",
+            "address": "51/9 Soi Sukhumvit 39, Khlong Tan Nuea, Watthana, Bangkok 10110",
+            "phone": "+66 94-668-5468",
+            "rating": 4.9,
+            "review_count": 512,
+            "photos": [U["thai_herbs"], U["spa_stones"], U["spa_interior"]],
+            "opening_hours": {"weekday_text": ["Monday – Sunday: 9:00 AM – 10:00 PM"]},
+            "facebook_url": "https://www.facebook.com/herbalgroundthailand",
+            "has_website": True,
+            "area": "phrom_phong",
+        },
+        {
+            "slug": "herbal-ground-spa",
+            "business_name_th": "เฮอร์เบิล กราวด์ สปา",
+            "business_name_en": "Herbal Ground Spa",
+            "tagline": "พลังสมุนไพรไทยเพื่อการฟื้นฟู",
+            "tagline_en": "The Healing Power of Thai Botanicals",
+            "brand_tone": "natural",
+            "primary_color": "#1a2410",
+            "secondary_color": "#283d18",
+            "accent_color": "#9dbc5a",
+            "text_color": "#f5f0e8",
+            "logo_url": None,
+            "cover_photo_url": "https://herbalgroundthailand.com/wp-content/uploads/2022/07/Home-page1.jpg",
+            "gallery_photos": [
+                "https://herbalgroundthailand.com/wp-content/uploads/2022/10/herbal-308-scaled.jpg",
+                "https://herbalgroundthailand.com/wp-content/uploads/2022/10/herbal-184_-scaled-e1686816764453.jpg",
+                "https://herbalgroundthailand.com/wp-content/uploads/2022/10/herbal-176_-scaled-e1686816531191.jpg",
+            ],
+            "services": [
+                {"name_th": "นวดสมุนไพรไทย", "name_en": "Thai Herbal Compress", "duration_min": 90, "price_thb": 950, "icon": "🌿", "description": "ลูกประคบสมุนไพรไทยสดที่คัดสรรและปรุงใหม่ทุกวัน ประกอบด้วยตะไคร้ ขมิ้น ใบมะกรูด และไพล ช่วยลดการอักเสบ คลายกล้ามเนื้อลึก และบำรุงผิวให้นุ่มชุ่มชื้น", "tags": ["สมุนไพรสด", "ลดการอักเสบ", "บำรุงผิว"]},
+                {"name_th": "นวดแผนไทยดั้งเดิม", "name_en": "Traditional Thai Massage", "duration_min": 60, "price_thb": 550, "icon": "🪷", "description": "นวดแผนไทยตามตำราโบราณ โดยนักบำบัดที่ผ่านการฝึกอบรมจากสถาบันชั้นนำ ด้วยเทคนิคกดจุดและยืดเส้น เพื่อฟื้นฟูพลังงานชีวิต", "tags": ["ตำราโบราณ", "นักบำบัดผู้เชี่ยวชาญ", "ฟื้นฟูพลังงาน"]},
+                {"name_th": "นวดน้ำมันสมุนไพร", "name_en": "Herbal Oil Massage", "duration_min": 60, "price_thb": 700, "icon": "💆", "description": "น้ำมันสมุนไพรไทยสูตรเฉพาะของ Herbal Ground ที่ผสมจากพืชสมุนไพรหลายชนิด ช่วยบำรุงผิว คลายกล้ามเนื้อ และฟื้นฟูร่างกายจากภายใน", "tags": ["สูตรเฉพาะ", "สมุนไพรไทย", "ฟื้นฟูเชิงลึก"]},
+                {"name_th": "สครับสมุนไพร", "name_en": "Herbal Body Scrub", "duration_min": 45, "price_thb": 600, "icon": "🌱", "description": "สครับผิวด้วยสมุนไพรไทยธรรมชาติ ขัดเซลล์ผิวเก่า บำรุงผิวด้วยสารสกัดจากพืช ผิวกายสว่างกระจ่างใสและนุ่มเนียน", "tags": ["สมุนไพรธรรมชาติ", "ผิวกระจ่างใส", "ปลอดสารเคมี"]},
+            ],
+            "about_text_th": "เฮอร์เบิล กราวด์ สปา คือสถานที่บำบัดที่ใช้สมุนไพรไทยแท้ คัดสรรใหม่ทุกวัน ตามสูตรโบราณที่สืบทอดมาหลายชั่วอายุคน ในบรรยากาศสงบเงียบบนสุขุมวิท 39",
+            "about_text_en": "Herbal Ground Spa is a peaceful, private retreat on Sukhumvit 39, dedicated to authentic Thai botanical healing. Every herbal compress is freshly prepared with lemongrass, turmeric, kaffir lime and plai — sourced from trusted natural suppliers. Guests consistently praise its serene atmosphere, chemical-free products, and deeply restorative treatments.",
+            "top_reviews": [
+                {"author": "Laura M.", "rating": 5, "text": "The herbal compress massage is incredible. You can really feel the quality of the herbs."},
+                {"author": "Hans K.", "rating": 5, "text": "Best herbal spa in Bangkok. Very professional, great atmosphere."},
+                {"author": "กัญญา ล.", "rating": 5, "text": "นวดสมุนไพรดีที่สุดที่เคยใช้บริการค่ะ สมุนไพรสดใหม่ นักบำบัดเก่งมาก"},
+            ],
+            "line_id": "@herbalground",
+            "bts_mrt": "BTS Phrom Phong — 8 min walk",
+            "google_maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5!2d100.5760!3d13.7260!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQzJzMzLjYiTiAxMDDCsDM0JzI3LjYiRQ!5e0!3m2!1sen!2sth!4v1234567890",
+            "design_direction": "luxury-editorial",
+        }
+    ),
+    # ─── 8. Bangkok Sports Massage Thonglor ────────────────────────────────
+    (
+        {
+            "name": "Bangkok Sports Massage",
+            "slug": "bangkok-sports-massage",
+            "place_id": "bsm_thonglor",
+            "address": "Sukhumvit Soi 55, Thonglor, Bangkok",
+            "phone": "+66 88-466-9955",
+            "rating": 4.7,
+            "review_count": 198,
+            "photos": [U["massage_table"], U["spa_interior"], U["spa_towels"]],
+            "opening_hours": {"weekday_text": ["Monday – Sunday: 10:00 AM – 10:00 PM"]},
+            "facebook_url": "https://www.facebook.com/bangkoksportsmassage",
+            "has_website": True,
+            "area": "thonglor",
+        },
+        {
+            "slug": "bangkok-sports-massage",
+            "business_name_th": "แบงค็อก สปอร์ตส์ มาสสาจ",
+            "business_name_en": "Bangkok Sports Massage",
+            "tagline": "ฟื้นฟูร่างกายหลังออกกำลังกาย",
+            "tagline_en": "Recover Faster. Perform Better.",
+            "brand_tone": "modern",
+            "primary_color": "#0d1117",
+            "secondary_color": "#161b22",
+            "accent_color": "#e85d04",
+            "text_color": "#e6edf3",
+            "logo_url": None,
+            "cover_photo_url": U["massage_table"],
+            "gallery_photos": [U["spa_interior"], U["spa_towels"], U["foot_massage"]],
+            "services": [
+                {"name_th": "นวดกีฬา", "name_en": "Sports Massage", "duration_min": 60, "price_thb": 700, "icon": "⚡", "description": "นวดเทคนิคกีฬาสำหรับนักกีฬาและผู้ออกกำลังกาย เน้นกลุ่มกล้ามเนื้อที่ใช้งานหนัก เพื่อเร่งการฟื้นฟู เพิ่มความยืดหยุ่น และป้องกันการบาดเจ็บซ้ำ", "tags": ["สำหรับนักกีฬา", "เร่งฟื้นฟู", "ป้องกันบาดเจ็บ"]},
+                {"name_th": "นวดเนื้อเยื่อลึก", "name_en": "Deep Tissue Massage", "duration_min": 60, "price_thb": 750, "icon": "💪", "description": "แรงกดลึกและช้าเพื่อเข้าถึงกล้ามเนื้อชั้นลึก คลายการยึดติดของเนื้อเยื่อ เหมาะสำหรับผู้ที่มีอาการปวดเรื้อรังหรือกล้ามเนื้อตึงมาก", "tags": ["ปวดเรื้อรัง", "กล้ามเนื้อลึก", "ผลลัพธ์ชัดเจน"]},
+                {"name_th": "นวดแผนไทย", "name_en": "Thai Massage", "duration_min": 60, "price_thb": 500, "icon": "🪷", "description": "นวดแผนไทยดั้งเดิม ผสานเทคนิคกดจุดและยืดเส้น เหมาะสำหรับการผ่อนคลายหลังออกกำลังกายเบา หรือสำหรับผู้ที่ต้องการคลายกล้ามเนื้อทั่วร่างกาย", "tags": ["ผ่อนคลาย", "ยืดเส้น", "คลายกล้ามเนื้อ"]},
+                {"name_th": "รักษาอาการบาดเจ็บ", "name_en": "Injury Recovery Therapy", "duration_min": 90, "price_thb": 1200, "icon": "🏃", "description": "โปรแกรมบำบัดเฉพาะทาง 90 นาที สำหรับผู้บาดเจ็บจากการกีฬาหรืออุบัติเหตุ ผสานเทคนิคกายภาพบำบัดสมัยใหม่กับการนวดแผนโบราณ โดยนักบำบัดเฉพาะทาง", "tags": ["บำบัดเฉพาะทาง", "กายภาพบำบัด", "ฟื้นฟูเต็มรูปแบบ"]},
+            ],
+            "about_text_th": "แบงค็อก สปอร์ตส์ มาสสาจ คือสถานนวดกีฬาแห่งแรกของไทย ก่อตั้งในปี 2015 ให้บริการโดยนักกายภาพบำบัดและนักบำบัดกีฬาที่ผ่านการรับรองระดับสากล",
+            "about_text_en": "Thailand's first dedicated sports massage facility, established in 2015 on the 2nd floor of Fifty Fifth Plaza, Thonglor. Bangkok Sports Massage is staffed by qualified physiotherapists and certified sports massage therapists, offering Remedial Therapy, Muscle Activation Techniques (MAT), and recovery programmes trusted by athletes, gym-goers and office professionals across Bangkok.",
+            "top_reviews": [
+                {"author": "Mark T.", "rating": 5, "text": "Best sports massage in Bangkok. Fixed my back pain that I'd had for weeks."},
+                {"author": "Lisa H.", "rating": 5, "text": "Deep tissue massage was exactly what I needed after the marathon. Excellent."},
+                {"author": "วิทยา ม.", "rating": 5, "text": "นวดกีฬาดีมากครับ นักบำบัดรู้จักจุดที่ต้องนวด ฟื้นตัวไวมาก"},
+            ],
+            "line_id": "@bangkoksportsmassage",
+            "bts_mrt": "BTS Thonglor — 250m walk",
+            "google_maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5!2d100.5870!3d13.7250!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQzJzMwLjAiTiAxMDDCsDM1JzEzLjIiRQ!5e0!3m2!1sen!2sth!4v1234567890",
+            "design_direction": "luxury-editorial",
+        }
+    ),
+    # ─── 9. Dahra Spa Silom ────────────────────────────────────────────────
+    (
+        {
+            "name": "Dahra Spa",
+            "slug": "dahra-spa-silom",
+            "place_id": "dahra_silom",
+            "address": "Silom Road, Bang Rak, Bangkok 10500",
+            "phone": None,
+            "rating": 4.6,
+            "review_count": 167,
+            "photos": [U["spa_candles"], U["spa_pool"], U["spa_flowers"]],
+            "opening_hours": {"weekday_text": ["Monday – Sunday: 10:00 AM – 9:00 PM"]},
+            "facebook_url": None,
+            "has_website": True,
+            "area": "silom",
+        },
+        {
+            "slug": "dahra-spa-silom",
+            "business_name_th": "ดาห์รา สปา",
+            "business_name_en": "Dahra Spa",
+            "tagline": "ดินแดนแห่งความผ่อนคลายในย่านสีลม",
+            "tagline_en": "Your Escape in the Heart of Silom",
+            "brand_tone": "luxury",
+            "primary_color": "#120a1e",
+            "secondary_color": "#1e1030",
+            "accent_color": "#b8860b",
+            "text_color": "#ffffff",
+            "logo_url": None,
+            "cover_photo_url": "https://www.dahra-spa.com/wp-content/uploads/2020/09/1.jpg",
+            "gallery_photos": [
+                "https://www.dahra-spa.com/wp-content/uploads/2020/09/3.jpg",
+                "https://www.dahra-spa.com/wp-content/uploads/2020/09/5.jpg",
+                "https://www.dahra-spa.com/wp-content/uploads/2020/09/7.jpg",
+            ],
+            "services": [
+                {"name_th": "ดาห์รา ซิกเนเจอร์ มาสสาจ", "name_en": "Dahra Signature Massage", "duration_min": 90, "price_thb": 1500, "icon": "✦", "description": "ซิกเนเจอร์ทรีทเมนต์เฉพาะของดาห์รา สปา ผสานการนวดแผนไทยกับเทคนิคสปาจากทั่วโลก ออกแบบมาเพื่อประสบการณ์ที่ไม่เหมือนใคร ในบรรยากาศหรูหราของ Silom", "tags": ["Signature", "ลักซ์ชัวรี่", "ประสบการณ์เอกสิทธิ์"]},
+                {"name_th": "นวดแผนไทยโบราณ", "name_en": "Ancient Thai Massage", "duration_min": 60, "price_thb": 700, "icon": "🪷", "description": "นวดตามตำราโบราณที่สืบทอดมาหลายชั่วอายุคน ด้วยเทคนิคกดจุดพลังงานและยืดเส้น ในสไตล์ลักซ์ชัวรี่ของดาห์รา สปา", "tags": ["ตำราโบราณ", "ลักซ์ชัวรี่", "ผ่อนคลายเต็มที่"]},
+                {"name_th": "นวดหิน", "name_en": "Hot Stone Therapy", "duration_min": 90, "price_thb": 1200, "icon": "🔥", "description": "หินบะซอลต์ร้อนนำเข้าพิเศษ วางตามจุดพลังงานทั่วร่างกาย ความร้อนซึมลึกคลายกล้ามเนื้อ กระตุ้นการไหลเวียนเลือด และนำความสงบมาสู่จิตใจ", "tags": ["หินร้อน", "คลายกล้ามเนื้อลึก", "กระตุ้นไหลเวียน"]},
+                {"name_th": "สปาคู่รัก", "name_en": "Couple's Spa Package", "duration_min": 120, "price_thb": 2800, "icon": "💝", "description": "แพ็กเกจพิเศษสำหรับคู่รักในห้องสปาส่วนตัว 2 ชั่วโมงเต็ม พร้อมดอกไม้สด เทียนหอม น้ำผลไม้ และการดูแลระดับพรีเมียม ประสบการณ์โรแมนติกที่ไม่มีวันลืม", "tags": ["คู่รัก", "ห้องส่วนตัว", "โรแมนติก"]},
+            ],
+            "about_text_th": "ดาห์รา สปา ย่านสีลม คือสถานที่พักผ่อนระดับพรีเมียม ที่ผสมผสานการนวดแผนไทยโบราณกับเทคนิคสปาสมัยใหม่ ในบรรยากาศโรแมนติกและเป็นส่วนตัว",
+            "about_text_en": "Dahra Spa on Silom Road is a luxury escape in the heart of Bangkok's business district, combining ancient Royal Thai massage with contemporary spa therapies. Highly praised on TripAdvisor for its skilled therapists, elegant ambiance, and exceptional service, Dahra is a favourite for romantic couple packages and solo indulgence alike — just 5 minutes from BTS Chong Nonsi.",
+            "top_reviews": [
+                {"author": "Charlotte V.", "rating": 5, "text": "Perfect romantic spa experience. The couple's package was just beautiful."},
+                {"author": "Robert J.", "rating": 5, "text": "Dahra Signature Massage was exceptional. Best massage in Silom area."},
+                {"author": "อรุณี ก.", "rating": 5, "text": "สปาสวยหรูมากค่ะ นวดดีมาก บรรยากาศโรแมนติก แนะนำสำหรับคู่รัก"},
+            ],
+            "line_id": "@dahraspa",
+            "bts_mrt": "BTS Chong Nonsi — 5 min walk",
+            "google_maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3876.5!2d100.5300!3d13.7280!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQzJzQwLjgiTiAxMDDCsDMxJzQ4LjAiRQ!5e0!3m2!1sen!2sth!4v1234567890",
+            "design_direction": "luxury-editorial",
+        }
+    ),
+    # ─── 10. DreamHouse Thai Massage Sukhumvit 20 ──────────────────────────
+    (
+        {
+            "name": "DreamHouse Thai Massage & Spa",
+            "slug": "dreamhouse-thai-massage",
+            "place_id": "dreamhouse",
+            "address": "28 Soi Sukhumvit 20, Khlong Tan, Khlong Toei, Bangkok 10110",
+            "phone": "+66 82-942-4164",
+            "rating": 4.7,
+            "review_count": 389,
+            "photos": [U["spa_pool"], U["thai_massage"], U["massage_table"]],
+            "opening_hours": {"weekday_text": ["Monday – Sunday: 10:00 AM – 12:00 AM"]},
+            "facebook_url": "https://www.facebook.com/dreamhousemassagespa",
+            "has_website": True,
+            "area": "asok",
+        },
+        {
+            "slug": "dreamhouse-thai-massage",
+            "business_name_th": "ดรีม เฮาส์ ไทย มาสสาจ แอนด์ สปา",
+            "business_name_en": "DreamHouse Thai Massage & Spa",
+            "tagline": "บ้านแห่งความฝันและการผ่อนคลาย",
+            "tagline_en": "Where Every Massage Feels Like a Dream",
+            "brand_tone": "natural",
+            "primary_color": "#1c2620",
+            "secondary_color": "#2a3d30",
+            "accent_color": "#7ec8a0",
+            "text_color": "#f0ece4",
+            "logo_url": None,
+            "cover_photo_url": "https://static.wixstatic.com/media/6dc6eb_8f815023524849d18d51c64343541e48~mv2.jpg",
+            "gallery_photos": [
+                "https://static.wixstatic.com/media/6dc6eb_e8c9d2a3c8014608a2991c1422bdc8bc~mv2.jpg",
+                "https://static.wixstatic.com/media/6dc6eb_89b3d4d93689442e9f14bba5b63a69c8~mv2.jpg",
+                "https://static.wixstatic.com/media/11062b_4f574dcd0c5d4d90b84e1a5196536bd3~mv2.jpg",
+            ],
+            "services": [
+                {"name_th": "นวดแผนไทย", "name_en": "Thai Traditional Massage", "duration_min": 60, "price_thb": 500, "icon": "🪷", "description": "นวดแผนไทยดั้งเดิมในบรรยากาศอบอุ่นเหมือนบ้าน ด้วยนักบำบัดที่ใส่ใจทุกรายละเอียด ผ่อนคลายและฟื้นฟูร่างกายอย่างแท้จริง", "tags": ["ผ่อนคลาย", "บรรยากาศอบอุ่น", "ใส่ใจทุกรายละเอียด"]},
+                {"name_th": "นวดน้ำมันดอกไม้", "name_en": "Floral Oil Massage", "duration_min": 90, "price_thb": 900, "icon": "🌺", "description": "น้ำมันกลิ่นดอกไม้ไทยหอมสดชื่น ผสมจากดอกมะลิ กุหลาบ และอัญชัน นวดนุ่มนวลทั่วร่างกาย 90 นาที เพื่อการผ่อนคลายที่แสนฝัน", "tags": ["กลิ่นดอกไม้ไทย", "ผ่อนคลายลึก", "90 นาที"]},
+                {"name_th": "นวดเท้า", "name_en": "Foot Reflexology", "duration_min": 60, "price_thb": 450, "icon": "👣", "description": "รีเฟล็กโซโลจีเต็มรูปแบบ กดจุดสะท้อนเพื่อกระตุ้นอวัยวะภายใน ลดความล้า บรรเทาปวดเมื่อย และผ่อนคลายหลังจากวันที่ยาวนาน", "tags": ["รีเฟล็กโซโลจี", "ลดล้า", "ผ่อนคลาย"]},
+                {"name_th": "สปาหน้าและตัว", "name_en": "Body & Facial Spa", "duration_min": 120, "price_thb": 1800, "icon": "💎", "description": "แพ็กเกจครบครัน 2 ชั่วโมง ดูแลทั้งใบหน้าและร่างกาย ผสานสครับตัว ทรีทเมนต์หน้า และการนวดผ่อนคลาย เพื่อความสวยงามและผ่อนคลายอย่างสมบูรณ์", "tags": ["ครบครัน", "หน้า+กาย", "2 ชั่วโมง"]},
+            ],
+            "about_text_th": "ดรีม เฮาส์ ไทย มาสสาจ บนสุขุมวิท 20 มอบบรรยากาศอบอุ่นเหมือนบ้าน พร้อมการบริการนวดและสปาระดับมืออาชีพ เปิดถึงเที่ยงคืนทุกวัน",
+            "about_text_en": "DreamHouse Thai Massage & Spa on Sukhumvit 20 wraps guests in genuine warmth from the moment they arrive. Open daily until midnight, this intimate spa has earned a loyal following on GoWabi, Klook, and KKday for its professional therapists, private parking, and treatments that blend traditional Thai massage with floral aromatherapy oils — advance booking recommended.",
+            "top_reviews": [
+                {"author": "Sarah W.", "rating": 5, "text": "So cosy and relaxing. The floral oil massage was absolutely dreamy."},
+                {"author": "Kevin L.", "rating": 5, "text": "Great location near Asok BTS. Very professional and clean. Will be back."},
+                {"author": "สุภาพร ท.", "rating": 5, "text": "นวดดีมากค่ะ บรรยากาศอบอุ่น เหมือนอยู่บ้าน แนะนำมาก"},
+            ],
+            "line_id": "@dreamhousemassage",
+            "bts_mrt": "BTS Asok — 5 min walk",
+            "google_maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5!2d100.5620!3d13.7400!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ0JzI0LjAiTiAxMDDCsDMzJzQzLjIiRQ!5e0!3m2!1sen!2sth!4v1234567890",
+            "design_direction": "luxury-editorial",
+        }
+    ),
+]
+
+
+if __name__ == "__main__":
+    import shutil
+    output_dir = os.path.join(os.path.dirname(__file__), "sites")
+    os.makedirs(output_dir, exist_ok=True)
+
+    print(f"Generating {len(LEADS_AND_BRANDS)} demo sites...\n")
+    generated = []
+    for lead, brand in LEADS_AND_BRANDS:
+        try:
+            starter_path, premium_path = generate_site(
+                lead, brand,
+                output_dir=output_dir,
+                deploy_url=f"https://{brand['slug']}.netlify.app",
+            )
+            generated.append(brand["slug"])
+            print(f"  ✓ {brand['business_name_en']}")
+        except Exception as e:
+            print(f"  ✗ {brand['business_name_en']}: {e}")
+
+    print(f"\n✅ {len(generated)}/{len(LEADS_AND_BRANDS)} sites generated in: {output_dir}")
+    print("\nSites ready:")
+    for slug in generated:
+        print(f"  sites/{slug}/starter/index.html")
+        print(f"  sites/{slug}/premium/index.html")

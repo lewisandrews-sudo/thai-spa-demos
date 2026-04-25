@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookings — Nature Thai Massage (Sukhumvit 24)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #0d1117; color: #e6edf3; padding: 24px; }
+    h1 { font-size: 1.2rem; margin-bottom: 4px; }
+    .subtitle { color: #8b949e; font-size: 0.85rem; margin-bottom: 24px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th { text-align: left; padding: 10px 12px; background: #161b22; color: #8b949e; font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+    td { padding: 12px; border-bottom: 1px solid #21262d; }
+    tr:hover td { background: #161b22; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    .badge-pending { background: rgba(210,153,34,0.15); color: #d29922; }
+    .badge-confirmed { background: rgba(46,160,67,0.15); color: #2ea043; }
+    .loading { color: #8b949e; text-align: center; padding: 40px; }
+    .stat-row { display: flex; gap: 20px; margin-bottom: 24px; flex-wrap: wrap; }
+    .stat { background: #161b22; padding: 16px 20px; border-radius: 6px; min-width: 120px; }
+    .stat-value { font-size: 1.8rem; font-weight: 700; }
+    .stat-label { font-size: 0.75rem; color: #8b949e; margin-top: 2px; }
+    @media (max-width: 600px) { th:nth-child(n+5), td:nth-child(n+5) { display: none; } }
+  </style>
+</head>
+<body>
+  <h1>Nature Thai Massage (Sukhumvit 24) — Booking Dashboard</h1>
+  <p class="subtitle">เนเชอร์ ไทย มาสสาจ (สุขุมวิท 24) • Admin view</p>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-value" id="stat-total">—</div><div class="stat-label">Total Bookings</div></div>
+    <div class="stat"><div class="stat-value" id="stat-today">—</div><div class="stat-label">Today</div></div>
+    <div class="stat"><div class="stat-value" id="stat-pending">—</div><div class="stat-label">Pending</div></div>
+  </div>
+  <table>
+    <thead><tr><th>Date</th><th>Time</th><th>Service</th><th>Name</th><th>Phone</th><th>LINE</th><th>Status</th></tr></thead>
+    <tbody id="bookings-body"><tr><td colspan="7" class="loading">Loading bookings...</td></tr></tbody>
+  </table>
+  <script>
+    const SUPABASE_URL = "";
+    const SUPABASE_KEY = "";
+    const TABLE = "bookings_nature_thai_massage_s24";
+    const today = new Date().toISOString().split('T')[0];
+
+    async function loadBookings() {
+      const resp = await fetch(
+        `${SUPABASE_URL}/rest/v1/${TABLE}?select=*&order=booking_date.desc,booking_time.desc`,
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+      );
+      const rows = await resp.json();
+      if (!Array.isArray(rows)) { document.getElementById('bookings-body').innerHTML = '<tr><td colspan="7">No bookings yet.</td></tr>'; return; }
+      document.getElementById('stat-total').textContent = rows.length;
+      document.getElementById('stat-today').textContent = rows.filter(r => r.booking_date === today).length;
+      document.getElementById('stat-pending').textContent = rows.filter(r => r.status === 'pending').length;
+      document.getElementById('bookings-body').innerHTML = rows.map(r => `
+        <tr>
+          <td>${r.booking_date}</td><td>${r.booking_time}</td><td>${r.service}</td>
+          <td>${r.customer_name}</td><td><a href="tel:${r.customer_phone}" style="color:#58a6ff;">${r.customer_phone}</a></td>
+          <td>${r.customer_line_id || '—'}</td>
+          <td><span class="badge badge-${r.status}">${r.status}</span></td>
+        </tr>`).join('');
+    }
+    loadBookings();
+  </script>
+</body>
+</html>
