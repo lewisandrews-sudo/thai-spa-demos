@@ -46,14 +46,19 @@
     #about p + p { margin-top: 12px; }
     #services { max-width: 1100px; }
     .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; margin-top: 32px; }
-    .service-card { border: 1px solid rgba(255,255,255,0.1); padding: 28px 24px; transition: border-color 0.2s; }
-    .service-card:hover { border-color: var(--accent); }
-    .service-name-th { font-size: 1.1rem; font-family: var(--font-display); margin-bottom: 4px; }
-    .service-name-en { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
-    .service-meta { display: flex; justify-content: space-between; align-items: center; }
-    .service-duration { font-size: 0.8rem; color: var(--text-muted); }
-    .service-price { font-size: 1.3rem; font-family: var(--font-display); color: var(--accent); }
-    .service-book { display: block; margin-top: 20px; text-align: center; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; cursor: pointer; width: 100%; }
+    .service-card { border: 1px solid rgba(255,255,255,0.1); padding: 28px 24px; transition: border-color 0.2s, transform 0.2s; display: flex; flex-direction: column; }
+    .service-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .service-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .service-icon { font-size: 1.5rem; line-height: 1; }
+    .service-duration-pill { font-size: 0.62rem; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.15); padding: 4px 10px; color: var(--text-muted); white-space: nowrap; border-radius: 20px; }
+    .service-name-th { font-size: 1.15rem; font-family: var(--font-display); margin-bottom: 3px; }
+    .service-name-en { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+    .service-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 16px; flex-grow: 1; }
+    .service-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+    .service-tag { font-size: 0.62rem; letter-spacing: 0.5px; padding: 4px 10px; border: 1px solid rgba(255,255,255,0.12); color: var(--text-muted); background: rgba(255,255,255,0.04); }
+    .service-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 18px; margin-top: auto; gap: 12px; }
+    .service-price { font-size: 1.4rem; font-family: var(--font-display); color: var(--accent); white-space: nowrap; }
+    .service-book { text-align: center; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 9px 16px; font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background 0.2s, color 0.2s; white-space: nowrap; }
     .service-book:hover { background: var(--accent); color: var(--primary); }
     <style>/* thai_spa_lead_gen/templates/booking_styles.css.j2 */
 .booking-label { display:block; font-size:0.75rem; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:8px; margin-top:24px; }
@@ -128,51 +133,87 @@
   <div class="services-grid">
     
     <div class="service-card">
+      <div class="service-card-header">
+        <span class="service-icon">🪷</span>
+        <span class="service-duration-pill">60 นาที / min</span>
+      </div>
       <div class="service-name-th">นวดแผนไทย</div>
       <div class="service-name-en">Thai Traditional Massage</div>
-      <div class="service-meta">
-        <span class="service-duration">60 นาที / min</span>
-        <span class="service-price">฿500</span>
+      <p class="service-desc">ศาสตร์การนวดแผนไทยโบราณ ใช้แรงกดและการยืดเส้นเพื่อคลายกล้ามเนื้อที่ตึง ฟื้นฟูพลังงาน และนำสมดุลกลับสู่ร่างกาย</p>
+      
+      <div class="service-tags">
+        <span class="service-tag">ผ่อนคลาย</span><span class="service-tag">ลดปวดเมื่อย</span><span class="service-tag">สมดุลร่างกาย</span>
       </div>
-      <a href="#booking" class="service-book">
-        จองนัด / Book
-      </a>
+      
+      <div class="service-footer">
+        <span class="service-price">฿500</span>
+        <a href="#booking" class="service-book">
+          จองนัด / Book
+        </a>
+      </div>
     </div>
     
     <div class="service-card">
+      <div class="service-card-header">
+        <span class="service-icon">🌿</span>
+        <span class="service-duration-pill">90 นาที / min</span>
+      </div>
       <div class="service-name-th">นวดสมุนไพร</div>
       <div class="service-name-en">Herbal Compress Massage</div>
-      <div class="service-meta">
-        <span class="service-duration">90 นาที / min</span>
-        <span class="service-price">฿850</span>
+      <p class="service-desc">ลูกประคบสมุนไพรไทยร้อนๆ ที่ผสมตะไคร้ ขมิ้น และมะกรูด ประคบทั่วร่างกาย ช่วยคลายกล้ามเนื้อเรื้อรัง ลดการอักเสบ และบำรุงผิว</p>
+      
+      <div class="service-tags">
+        <span class="service-tag">สมุนไพรไทย</span><span class="service-tag">ลดอักเสบ</span><span class="service-tag">บำรุงผิว</span>
       </div>
-      <a href="#booking" class="service-book">
-        จองนัด / Book
-      </a>
+      
+      <div class="service-footer">
+        <span class="service-price">฿850</span>
+        <a href="#booking" class="service-book">
+          จองนัด / Book
+        </a>
+      </div>
     </div>
     
     <div class="service-card">
+      <div class="service-card-header">
+        <span class="service-icon">💆</span>
+        <span class="service-duration-pill">60 นาที / min</span>
+      </div>
       <div class="service-name-th">นวดน้ำมัน</div>
       <div class="service-name-en">Oil Massage</div>
-      <div class="service-meta">
-        <span class="service-duration">60 นาที / min</span>
-        <span class="service-price">฿600</span>
+      <p class="service-desc">น้ำมันนวดคุณภาพสูงจากพืชธรรมชาติ ผสมกับเทคนิคนวดที่อ่อนโยน ช่วยบำรุงผิว ลดความตึงเครียด และสร้างความผ่อนคลายอย่างลึกซึ้ง</p>
+      
+      <div class="service-tags">
+        <span class="service-tag">ผ่อนคลาย</span><span class="service-tag">บำรุงผิว</span><span class="service-tag">คลายเครียด</span>
       </div>
-      <a href="#booking" class="service-book">
-        จองนัด / Book
-      </a>
+      
+      <div class="service-footer">
+        <span class="service-price">฿600</span>
+        <a href="#booking" class="service-book">
+          จองนัด / Book
+        </a>
+      </div>
     </div>
     
     <div class="service-card">
+      <div class="service-card-header">
+        <span class="service-icon">👣</span>
+        <span class="service-duration-pill">45 นาที / min</span>
+      </div>
       <div class="service-name-th">นวดเท้า</div>
       <div class="service-name-en">Foot Massage</div>
-      <div class="service-meta">
-        <span class="service-duration">45 นาที / min</span>
-        <span class="service-price">฿400</span>
+      <p class="service-desc">กดจุดสะท้อนบนฝ่าเท้า กระตุ้นการไหลเวียนเลือด บรรเทาอาการปวดเมื่อยจากการยืนหรือเดินนาน เหมาะสำหรับผู้ที่ต้องใช้เท้าหนัก</p>
+      
+      <div class="service-tags">
+        <span class="service-tag">ลดบวม</span><span class="service-tag">คลายล้า</span><span class="service-tag">กระตุ้นไหลเวียน</span>
       </div>
-      <a href="#booking" class="service-book">
-        จองนัด / Book
-      </a>
+      
+      <div class="service-footer">
+        <span class="service-price">฿400</span>
+        <a href="#booking" class="service-book">
+          จองนัด / Book
+        </a>
+      </div>
     </div>
     
   </div>

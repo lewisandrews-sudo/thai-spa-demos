@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.0.3, pluggy-1.6.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/lewisandrews/Programs cc/Intelligence Agent/thai_spa_lead_gen
+plugins: mock-3.15.1, asyncio-1.3.0, anyio-4.13.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+tests/test_report_generator.py::test_generate_report_creates_html_file PASSED [100%]
+
+============================== 1 passed in 0.06s ===============================

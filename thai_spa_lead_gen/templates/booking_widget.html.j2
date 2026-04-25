@@ -1,0 +1,59 @@
+{# thai_spa_lead_gen/templates/booking_widget.html.j2 #}
+<section id="booking" style="padding: 80px 24px; max-width: 640px; margin: 0 auto;">
+  <p class="section-label">จองนัดหมาย</p>
+  <h2 class="section-title">Book Online</h2>
+  <div class="divider"></div>
+
+  <div id="booking-form">
+    <!-- Step 1: Service -->
+    <div class="booking-step" id="step-1">
+      <label class="booking-label">เลือกบริการ / Select Service</label>
+      <select id="booking-service" class="booking-input" onchange="bookingSelectService(this.value)">
+        <option value="">— เลือกบริการ —</option>
+        {% for service in brand.services %}
+        <option value="{{ service.name_en }}" data-duration="{{ service.duration_min }}" data-price="{{ service.price_thb }}">
+          {{ service.name_th }} / {{ service.name_en }} — {{ service.duration_min }}min — ฿{{ service.price_thb | int }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Step 2: Date -->
+    <div class="booking-step hidden" id="step-2">
+      <label class="booking-label">เลือกวันที่ / Select Date</label>
+      <input type="date" id="booking-date" class="booking-input" min="" onchange="bookingSelectDate(this.value)">
+    </div>
+
+    <!-- Step 3: Time -->
+    <div class="booking-step hidden" id="step-3">
+      <label class="booking-label">เลือกเวลา / Select Time</label>
+      <div id="time-slots" class="time-slots-grid"></div>
+    </div>
+
+    <!-- Step 4: Contact -->
+    <div class="booking-step hidden" id="step-4">
+      <label class="booking-label">ข้อมูลติดต่อ / Your Details</label>
+      <input type="text" id="booking-name" class="booking-input" placeholder="ชื่อ-นามสกุล / Full Name" required>
+      <input type="tel" id="booking-phone" class="booking-input" placeholder="เบอร์โทร / Phone Number" required>
+      <input type="text" id="booking-line" class="booking-input" placeholder="LINE ID (ถ้ามี / optional)">
+    </div>
+
+    <!-- Submit -->
+    <div class="booking-step hidden" id="step-submit">
+      <div id="booking-summary" class="booking-summary"></div>
+      <button onclick="submitBooking()" class="btn-primary" style="width:100%; border:none; cursor:pointer; font-family: var(--font-body); margin-top:16px;">
+        ยืนยันการจอง / Confirm Booking
+      </button>
+    </div>
+
+    <!-- Confirmation -->
+    <div class="hidden" id="booking-confirmation" style="text-align:center; padding: 40px 0;">
+      <div style="font-size:3rem; margin-bottom:16px;">✅</div>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom:8px;">จองสำเร็จแล้ว!</h3>
+      <p style="color: var(--text-muted);">Booking confirmed! We'll contact you to confirm the appointment.</p>
+      <p id="confirmation-details" style="margin-top:16px; font-size:0.9rem;"></p>
+    </div>
+
+    <div id="booking-error" class="hidden" style="color:#ff6b6b; margin-top:12px; font-size:0.85rem;"></div>
+  </div>
+</section>

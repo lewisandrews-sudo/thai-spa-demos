@@ -1,0 +1,106 @@
+// thai_spa_lead_gen/templates/booking_scripts.js.j2
+<script>
+const SUPABASE_URL = "{{ supabase_url }}";
+const SUPABASE_KEY = "{{ supabase_anon_key }}";
+const BUSINESS_SLUG = "{{ brand.slug }}";
+const BOOKING_FUNCTION_URL = "{{ booking_function_url }}";
+
+let bookingState = { service: null, duration: null, price: null, date: null, time: null };
+
+// Set min date to tomorrow
+document.getElementById('booking-date').min = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+
+function showStep(id) { document.getElementById(id).classList.remove('hidden'); }
+function hideStep(id) { document.getElementById(id).classList.add('hidden'); }
+
+function bookingSelectService(val) {
+  if (!val) return;
+  const opt = document.querySelector(`#booking-service option[value="${val}"]`);
+  bookingState.service = val;
+  bookingState.duration = parseInt(opt.dataset.duration);
+  bookingState.price = parseInt(opt.dataset.price);
+  showStep('step-2');
+}
+
+function bookingSelectDate(val) {
+  if (!val) return;
+  bookingState.date = val;
+  const slots = generateTimeSlots();
+  const grid = document.getElementById('time-slots');
+  grid.innerHTML = slots.map(t =>
+    `<div class="time-slot" onclick="bookingSelectTime('${t}',this)">${t}</div>`
+  ).join('');
+  showStep('step-3');
+}
+
+function generateTimeSlots() {
+  // Generate slots based on service duration from 10:00 to 21:00
+  const slots = [];
+  const duration = bookingState.duration || 60;
+  for (let h = 10; h <= 21 - duration/60; h++) {
+    for (let m = 0; m < 60; m += duration >= 90 ? 60 : 60) {
+      slots.push(`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`);
+    }
+  }
+  return slots;
+}
+
+function bookingSelectTime(time, el) {
+  document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  bookingState.time = time;
+  showStep('step-4');
+  updateSummary();
+  showStep('step-submit');
+}
+
+function updateSummary() {
+  const dateObj = new Date(bookingState.date + 'T' + bookingState.time);
+  const options = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  document.getElementById('booking-summary').innerHTML =
+    `<strong>บริการ:</strong> ${bookingState.service}<br>` +
+    `<strong>วันที่:</strong> ${dateObj.toLocaleDateString('th-TH', options)}<br>` +
+    `<strong>เวลา:</strong> ${bookingState.time} น. (${bookingState.duration} นาที)<br>` +
+    `<strong>ราคา:</strong> ฿${bookingState.price.toLocaleString()}`;
+}
+
+async function submitBooking() {
+  const name = document.getElementById('booking-name').value.trim();
+  const phone = document.getElementById('booking-phone').value.trim();
+  const lineId = document.getElementById('booking-line').value.trim();
+  const errEl = document.getElementById('booking-error');
+
+  if (!name || !phone) {
+    errEl.textContent = 'กรุณากรอกชื่อและเบอร์โทร / Please fill in name and phone.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  errEl.classList.add('hidden');
+  const payload = {
+    business_slug: BUSINESS_SLUG,
+    service: bookingState.service,
+    booking_date: bookingState.date,
+    booking_time: bookingState.time,
+    customer_name: name,
+    customer_phone: phone,
+    customer_line_id: lineId || null,
+  };
+
+  try {
+    const resp = await fetch(BOOKING_FUNCTION_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!resp.ok) throw new Error('Server error');
+    document.getElementById('booking-form').classList.add('hidden');
+    document.getElementById('booking-confirmation').classList.remove('hidden');
+    document.getElementById('confirmation-details').textContent =
+      `${bookingState.service} — ${bookingState.date} ${bookingState.time} — ${name}`;
+  } catch (e) {
+    errEl.textContent = 'เกิดข้อผิดพลาด กรุณาลองใหม่ / Error, please try again.';
+    errEl.classList.remove('hidden');
+  }
+}
+</script>

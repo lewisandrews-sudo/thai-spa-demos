@@ -1,0 +1,104 @@
+{# thai_spa_lead_gen/templates/report.html.j2 #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lead Report — {{ run_date }}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0d1117; color: #e6edf3; padding: 24px; }
+    h1 { font-size: 1.4rem; margin-bottom: 4px; }
+    .run-meta { color: #8b949e; font-size: 0.85rem; margin-bottom: 24px; }
+    .summary { display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
+    .stat { background: #161b22; padding: 16px 20px; border-radius: 8px; min-width: 130px; border: 1px solid #30363d; }
+    .stat-value { font-size: 2rem; font-weight: 700; }
+    .stat-label { font-size: 0.75rem; color: #8b949e; margin-top: 2px; }
+    .stat-value.green { color: #2ea043; }
+    .leads-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
+    .lead-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; overflow: hidden; }
+    .lead-cover { width: 100%; height: 140px; object-fit: cover; display: block; background: #21262d; }
+    .lead-body { padding: 16px; }
+    .lead-name { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+    .lead-meta { font-size: 0.8rem; color: #8b949e; margin-bottom: 12px; line-height: 1.6; }
+    .lead-rating { color: #d29922; }
+    .lead-links { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .btn { display: inline-block; padding: 7px 14px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-decoration: none; cursor: pointer; border: none; }
+    .btn-starter { background: #1f6feb; color: white; }
+    .btn-premium { background: #c9a84c; color: #1a1a2e; }
+    .btn-copy { background: #21262d; color: #e6edf3; border: 1px solid #30363d; font-family: inherit; }
+    .btn-copy:hover, .btn-starter:hover, .btn-premium:hover { opacity: 0.85; }
+    .outreach-box { background: #0d1117; border: 1px solid #30363d; border-radius: 4px; padding: 10px; font-size: 0.78rem; color: #8b949e; line-height: 1.6; white-space: pre-wrap; margin-top: 8px; display: none; font-family: monospace; }
+    .outreach-box.visible { display: block; }
+    .no-url { color: #8b949e; font-size: 0.75rem; font-style: italic; }
+    .copy-toast { position: fixed; bottom: 24px; right: 24px; background: #2ea043; color: white; padding: 10px 20px; border-radius: 6px; font-size: 0.85rem; display: none; z-index: 999; }
+  </style>
+</head>
+<body>
+  <h1>Thai Spa Lead Report</h1>
+  <p class="run-meta">Generated {{ run_date }} • {{ area | title }} • {{ business_type | title }}</p>
+
+  <div class="summary">
+    <div class="stat"><div class="stat-value">{{ results | length }}</div><div class="stat-label">Leads Found</div></div>
+    <div class="stat"><div class="stat-value">{{ results | selectattr('starter_url') | list | length }}</div><div class="stat-label">Starter Sites</div></div>
+    <div class="stat"><div class="stat-value">{{ results | selectattr('premium_url') | list | length }}</div><div class="stat-label">Premium Sites</div></div>
+    <div class="stat"><div class="stat-value green">฿{{ "{:,}".format(results | length * 10000) }}</div><div class="stat-label">Potential Revenue</div></div>
+  </div>
+
+  <div class="leads-grid">
+    {% for r in results %}
+    <div class="lead-card">
+      {% if r.brand.cover_photo_url %}
+      <img class="lead-cover" src="{{ r.brand.cover_photo_url }}" alt="{{ r.lead.name }}" onerror="this.style.display='none'">
+      {% endif %}
+      <div class="lead-body">
+        <div class="lead-name">{{ r.lead.name }}</div>
+        <div class="lead-meta">
+          {{ r.lead.address }}<br>
+          {% if r.brand.bts_mrt %}<span style="color:#58a6ff;">{{ r.brand.bts_mrt }}</span><br>{% endif %}
+          <span class="lead-rating">★ {{ r.lead.rating }}</span> ({{ r.lead.review_count }} reviews) •
+          <a href="tel:{{ r.lead.phone }}" style="color:#58a6ff;">{{ r.lead.phone }}</a>
+          {% if r.brand.line_id %} • {{ r.brand.line_id }}{% endif %}
+        </div>
+        <div class="lead-links">
+          {% if r.starter_url %}
+          <a href="{{ r.starter_url }}" target="_blank" class="btn btn-starter">Starter (฿5–8k)</a>
+          {% else %}<span class="no-url">Starter: not deployed</span>{% endif %}
+          {% if r.premium_url %}
+          <a href="{{ r.premium_url }}" target="_blank" class="btn btn-premium">Premium (฿10–15k)</a>
+          {% else %}<span class="no-url">Premium: not deployed</span>{% endif %}
+        </div>
+        <button class="btn btn-copy" onclick="toggleOutreach(this, '{{ loop.index0 }}')">
+          Thai Outreach Message
+        </button>
+        <div class="outreach-box" id="outreach-{{ loop.index0 }}">สวัสดีครับ/ค่ะ
+
+ผมเห็นร้าน {{ r.lead.name }} บน Google และประทับใจมากครับ
+
+ได้ลองทำเว็บไซต์ตัวอย่างให้ร้านคุณแล้ว ลองดูได้เลยครับ:
+
+{% if r.starter_url %}แบบพื้นฐาน: {{ r.starter_url }}{% endif %}
+{% if r.premium_url %}แบบมีระบบจอง: {{ r.premium_url }}{% endif %}
+
+ราคาเริ่มต้น ฿5,000 ครับ ถ้าสนใจทักมาคุยได้เลยนะครับ</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="copy-toast" id="toast">Copied to clipboard!</div>
+  <script>
+    function toggleOutreach(btn, idx) {
+      const box = document.getElementById('outreach-' + idx);
+      box.classList.toggle('visible');
+      if (box.classList.contains('visible')) {
+        navigator.clipboard.writeText(box.textContent.trim()).then(() => {
+          const t = document.getElementById('toast');
+          t.style.display = 'block';
+          setTimeout(() => t.style.display = 'none', 2000);
+        });
+      }
+    }
+  </script>
+</body>
+</html>
