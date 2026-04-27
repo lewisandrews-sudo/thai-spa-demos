@@ -9,11 +9,10 @@ load_dotenv()
 TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), "templates")
 
 TEMPLATE_MAP = {
-    "dark-luxury":       "dark_luxury.html.j2",
-    "warm-natural":      "warm_natural.html.j2",
-    "modern-minimal":    "modern_minimal.html.j2",
-    "thai-tropical":     "thai_tropical.html.j2",
-    "luxury-editorial":  "luxury_editorial.html.j2",
+    "dark-luxury":    "dark_luxury.html.j2",
+    "warm-natural":   "warm_natural.html.j2",
+    "modern-minimal": "modern_minimal.html.j2",
+    "thai-tropical":  "thai_tropical.html.j2",
 }
 
 

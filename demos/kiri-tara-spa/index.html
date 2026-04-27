@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiri Tara Spa</title>
+  <meta property="og:title" content="Kiri Tara Spa">
+  <meta property="og:description" content="Thai Traditional Massage • Aromatherapy Massage • Sai_mai • จองออนไลน์ได้เลย">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=1400&q=85">
+  <meta property="og:url" content="https://lewisandrews-sudo.github.io/thai-spa-demos/demos/kiri-tara-spa">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary:    #120a1e;
+      --secondary:  #1e1030;
+      --accent:     #b8860b;
+      --text:       #ffffff;
+      --text-muted: rgba(255,255,255,0.65);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Montserrat', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--primary); color: var(--text); font-family: var(--font-body); font-weight: 300; line-height: 1.7; }
+    nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent); }
+    .nav-logo { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); }
+    .nav-cta { background: var(--accent); color: var(--primary); padding: 10px 24px; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; text-decoration: none; }
+    #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 80px 24px 40px; position: relative; background: url('https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=1400&q=85') center/cover no-repeat; }
+    #hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(10,10,30,0.88) 100%); }
+    .hero-content { position: relative; z-index: 1; max-width: 700px; }
+    .hero-eyebrow { font-size: 0.7rem; letter-spacing: 5px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1.1; margin-bottom: 12px; }
+    .hero-title em { color: var(--accent); font-style: italic; }
+    .hero-tagline { font-size: clamp(0.9rem, 2vw, 1.1rem); color: var(--text-muted); margin-bottom: 40px; }
+    .hero-cta { display: inline-flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .btn-primary { background: var(--accent); color: var(--primary); padding: 14px 36px; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; text-decoration: none; }
+    .btn-outline { border: 1px solid var(--accent); color: var(--accent); padding: 14px 36px; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; text-decoration: none; }
+    section { padding: 80px 24px; max-width: 1000px; margin: 0 auto; }
+    .section-label { font-size: 0.65rem; letter-spacing: 5px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .section-title { font-family: var(--font-display); font-size: clamp(1.8rem, 5vw, 3rem); margin-bottom: 24px; }
+    .divider { width: 60px; height: 1px; background: var(--accent); margin: 16px 0 32px; }
+    #about p { color: var(--text-muted); font-size: 1rem; max-width: 640px; }
+    #about p + p { margin-top: 12px; }
+    #services { max-width: 1100px; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; margin-top: 32px; }
+    .service-card { border: 1px solid rgba(255,255,255,0.1); padding: 28px 24px; transition: border-color 0.2s; }
+    .service-card:hover { border-color: var(--accent); }
+    .service-name-th { font-size: 1.1rem; font-family: var(--font-display); margin-bottom: 4px; }
+    .service-name-en { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+    .service-meta { display: flex; justify-content: space-between; align-items: center; }
+    .service-duration { font-size: 0.8rem; color: var(--text-muted); }
+    .service-price { font-size: 1.3rem; font-family: var(--font-display); color: var(--accent); }
+    .service-book { display: block; margin-top: 20px; text-align: center; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; cursor: pointer; width: 100%; }
+    .service-book:hover { background: var(--accent); color: var(--primary); }
+    <style>/* thai_spa_lead_gen/templates/booking_styles.css.j2 */
+.booking-label { display:block; font-size:0.75rem; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:8px; margin-top:24px; }
+.booking-input { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:var(--text); padding:12px 16px; font-size:0.95rem; margin-bottom:4px; font-family:var(--font-body); outline:none; }
+.booking-input:focus { border-color:var(--accent); }
+.booking-input option { background: #1a1a2e; color: white; }
+.time-slots-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:8px; margin-top:8px; }
+.time-slot { padding:10px; text-align:center; border:1px solid rgba(255,255,255,0.15); cursor:pointer; font-size:0.85rem; transition:all 0.15s; }
+.time-slot:hover { border-color:var(--accent); color:var(--accent); }
+.time-slot.selected { background:var(--accent); color:var(--primary); border-color:var(--accent); }
+.booking-summary { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); padding:16px; font-size:0.9rem; line-height:1.8; }
+.hidden { display:none !important; }
+.booking-step { margin-bottom: 8px; }</style>
+    #gallery { max-width: 1100px; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; margin-top: 32px; }
+    .gallery-grid img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; cursor: pointer; transition: opacity 0.2s; }
+    .gallery-grid img:hover { opacity: 0.85; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 32px; }
+    .review-card { border-left: 2px solid var(--accent); padding: 20px 20px 20px 24px; background: rgba(255,255,255,0.03); }
+    .review-stars { color: var(--accent); font-size: 0.85rem; margin-bottom: 8px; }
+    .review-text { font-size: 0.9rem; color: var(--text-muted); font-style: italic; margin-bottom: 12px; line-height: 1.6; }
+    .review-author { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; }
+    #find-us .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 32px; }
+    #find-us iframe { width: 100%; height: 320px; border: none; }
+    .contact-info { display: flex; flex-direction: column; gap: 16px; }
+    .contact-item { display: flex; gap: 12px; align-items: flex-start; }
+    .contact-item-icon { color: var(--accent); font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+    .contact-item-text { font-size: 0.9rem; color: var(--text-muted); }
+    .contact-item-text strong { color: var(--text); display: block; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+    .line-btn { display: inline-block; background: #06c755; color: white; padding: 12px 24px; font-size: 0.8rem; font-weight: 600; text-decoration: none; margin-top: 8px; }
+    footer { background: rgba(0,0,0,0.4); padding: 32px 40px; text-align: center; font-size: 0.8rem; color: var(--text-muted); }
+    footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .nav-cta { display: none; }
+      #find-us .contact-grid { grid-template-columns: 1fr; }
+      .hero-cta { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Kiri Tara Spa</div>
+  <a href="#booking" class="nav-cta">
+    จองนัด / Book
+  </a>
+</nav>
+<section id="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Sai_mai, Bangkok</p>
+    <h1 class="hero-title">Kiri Tara Spa<br><em>Your Sanctuary in Sai Mai</em></h1>
+    <p class="hero-tagline">ความผ่อนคลายแท้จริง...</p>
+    <div class="hero-cta">
+      <a href="#booking" class="btn-primary">
+        จองออนไลน์ / Book Now
+      </a>
+      <a href="#services" class="btn-outline">บริการของเรา / Services</a>
+    </div>
+  </div>
+</section>
+<section id="about">
+  <p class="section-label">เกี่ยวกับเรา</p>
+  <h2 class="section-title">เกี่ยวกับเรา / About Us</h2>
+  <div class="divider"></div>
+  <p>Kiri Tara Spa ให้บริการนวดและสปาคุณภาพสูงในย่านSai Mai กรุงเทพฯ ด้วยนักบำบัดผู้เชี่ยวชาญและบรรยากาศที่ผ่อนคลาย</p>
+  <p>Kiri Tara Spa is a highly rated wellness destination in Sai Mai, Bangkok, offering professional Thai massage and spa treatments by certified therapists. With a rating of 4.6/5, it is a trusted choice for locals and visitors seeking genuine relaxation and rejuvenation.</p>
+</section>
+<section id="services">
+  <p class="section-label">บริการของเรา</p>
+  <h2 class="section-title">บริการ / Services</h2>
+  <div class="divider"></div>
+  <div class="services-grid">
+    
+    <div class="service-card">
+      <div class="service-name-th">นวดแผนไทย</div>
+      <div class="service-name-en">Thai Traditional Massage</div>
+      <div class="service-meta">
+        <span class="service-duration">60 นาที / min</span>
+        <span class="service-price">฿600</span>
+      </div>
+      <a href="#booking" class="service-book">
+        จองนัด / Book
+      </a>
+    </div>
+    
+    <div class="service-card">
+      <div class="service-name-th">อโรมาเธอราพี</div>
+      <div class="service-name-en">Aromatherapy Massage</div>
+      <div class="service-meta">
+        <span class="service-duration">90 นาที / min</span>
+        <span class="service-price">฿1000</span>
+      </div>
+      <a href="#booking" class="service-book">
+        จองนัด / Book
+      </a>
+    </div>
+    
+    <div class="service-card">
+      <div class="service-name-th">บอดี้สครับ</div>
+      <div class="service-name-en">Body Scrub & Wrap</div>
+      <div class="service-meta">
+        <span class="service-duration">60 นาที / min</span>
+        <span class="service-price">฿900</span>
+      </div>
+      <a href="#booking" class="service-book">
+        จองนัด / Book
+      </a>
+    </div>
+    
+    <div class="service-card">
+      <div class="service-name-th">ทรีทเมนต์หน้า</div>
+      <div class="service-name-en">Facial Treatment</div>
+      <div class="service-meta">
+        <span class="service-duration">75 นาที / min</span>
+        <span class="service-price">฿1200</span>
+      </div>
+      <a href="#booking" class="service-book">
+        จองนัด / Book
+      </a>
+    </div>
+    
+  </div>
+</section>
+
+<section id="booking" style="padding: 80px 24px; max-width: 640px; margin: 0 auto;">
+  <p class="section-label">จองนัดหมาย</p>
+  <h2 class="section-title">Book Online</h2>
+  <div class="divider"></div>
+
+  <div id="booking-form">
+    <!-- Step 1: Service -->
+    <div class="booking-step" id="step-1">
+      <label class="booking-label">เลือกบริการ / Select Service</label>
+      <select id="booking-service" class="booking-input" onchange="bookingSelectService(this.value)">
+        <option value="">— เลือกบริการ —</option>
+        
+        <option value="Thai Traditional Massage" data-duration="60" data-price="600">
+          นวดแผนไทย / Thai Traditional Massage — 60min — ฿600
+        </option>
+        
+        <option value="Aromatherapy Massage" data-duration="90" data-price="1000">
+          อโรมาเธอราพี / Aromatherapy Massage — 90min — ฿1000
+        </option>
+        
+        <option value="Body Scrub & Wrap" data-duration="60" data-price="900">
+          บอดี้สครับ / Body Scrub & Wrap — 60min — ฿900
+        </option>
+        
+        <option value="Facial Treatment" data-duration="75" data-price="1200">
+          ทรีทเมนต์หน้า / Facial Treatment — 75min — ฿1200
+        </option>
+        
+      </select>
+    </div>
+
+    <!-- Step 2: Date -->
+    <div class="booking-step hidden" id="step-2">
+      <label class="booking-label">เลือกวันที่ / Select Date</label>
+      <input type="date" id="booking-date" class="booking-input" min="" onchange="bookingSelectDate(this.value)">
+    </div>
+
+    <!-- Step 3: Time -->
+    <div class="booking-step hidden" id="step-3">
+      <label class="booking-label">เลือกเวลา / Select Time</label>
+      <div id="time-slots" class="time-slots-grid"></div>
+    </div>
+
+    <!-- Step 4: Contact -->
+    <div class="booking-step hidden" id="step-4">
+      <label class="booking-label">ข้อมูลติดต่อ / Your Details</label>
+      <input type="text" id="booking-name" class="booking-input" placeholder="ชื่อ-นามสกุล / Full Name" required>
+      <input type="tel" id="booking-phone" class="booking-input" placeholder="เบอร์โทร / Phone Number" required>
+      <input type="text" id="booking-line" class="booking-input" placeholder="LINE ID (ถ้ามี / optional)">
+    </div>
+
+    <!-- Submit -->
+    <div class="booking-step hidden" id="step-submit">
+      <div id="booking-summary" class="booking-summary"></div>
+      <button onclick="submitBooking()" class="btn-primary" style="width:100%; border:none; cursor:pointer; font-family: var(--font-body); margin-top:16px;">
+        ยืนยันการจอง / Confirm Booking
+      </button>
+    </div>
+
+    <!-- Confirmation -->
+    <div class="hidden" id="booking-confirmation" style="text-align:center; padding: 40px 0;">
+      <div style="font-size:3rem; margin-bottom:16px;">✅</div>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom:8px;">จองสำเร็จแล้ว!</h3>
+      <p style="color: var(--text-muted);">Booking confirmed! We'll contact you to confirm the appointment.</p>
+      <p id="confirmation-details" style="margin-top:16px; font-size:0.9rem;"></p>
+    </div>
+
+    <div id="booking-error" class="hidden" style="color:#ff6b6b; margin-top:12px; font-size:0.85rem;"></div>
+  </div>
+</section>
+
+<section id="gallery">
+  <p class="section-label">แกลเลอรี่</p>
+  <h2 class="section-title">ภาพบรรยากาศ / Gallery</h2>
+  <div class="divider"></div>
+  <div class="gallery-grid">
+    
+    <img src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=1400&q=85" alt="Kiri Tara Spa 1" loading="lazy">
+    
+    <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=1400&q=85" alt="Kiri Tara Spa 2" loading="lazy">
+    
+    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1400&q=85" alt="Kiri Tara Spa 3" loading="lazy">
+    
+  </div>
+</section>
+
+
+<section id="reviews">
+  <p class="section-label">รีวิวจากลูกค้า</p>
+  <h2 class="section-title">รีวิว / Reviews</h2>
+  <div class="divider"></div>
+  <div class="reviews-grid">
+    
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Absolutely wonderful experience. Professional staff, clean facilities, and deeply relaxing treatments."</p>
+      <div class="review-author">— Sarah L.</div>
+    </div>
+    
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Best massage I've had in Bangkok. Will definitely come back every time I visit."</p>
+      <div class="review-author">— Mark T.</div>
+    </div>
+    
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"บริการดีมาก นักบำบัดเก่ง บรรยากาศสงบ แนะนำมากๆ ครับ"</p>
+      <div class="review-author">— สมชาย ก.</div>
+    </div>
+    
+  </div>
+</section>
+
+<section id="find-us">
+  <p class="section-label">ค้นหาเรา</p>
+  <h2 class="section-title">ที่ตั้ง / Find Us</h2>
+  <div class="divider"></div>
+  <div class="contact-grid">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875!2d100.56!3d13.74!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ0!5e0!3m2!1sen!2sth!4v1234567890" allowfullscreen loading="lazy"></iframe>
+    <div class="contact-info">
+      <div class="contact-item">
+        <span class="contact-item-icon">📍</span>
+        <div class="contact-item-text">
+          <strong>ที่อยู่ / Address</strong>Sai Mai, Bangkok
+          <br><em>BTS Sai Mai</em>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-item-icon">📞</span>
+        <div class="contact-item-text">
+          <strong>โทร / Phone</strong><a href="tel:+66931398388" style="color:inherit;">+66931398388</a>
+        </div>
+      </div>
+      
+      
+      <div class="contact-item">
+        <span class="contact-item-icon">🕐</span>
+        <div class="contact-item-text">
+          <strong>เวลาเปิด / Hours</strong>
+          Monday – Sunday: 10:00 AM – 10:00 PM<br>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+<footer>
+  <p>© 2026 Kiri Tara Spa • Kiri Tara Spa</p>
+  
+</footer>
+// thai_spa_lead_gen/templates/booking_scripts.js.j2
+<script>
+const SUPABASE_URL = "";
+const SUPABASE_KEY = "";
+const BUSINESS_SLUG = "kiri-tara-spa";
+const BOOKING_FUNCTION_URL = "https://lewisandrews-sudo.github.io/thai-spa-demos/demos/kiri-tara-spa/.netlify/functions/book";
+
+let bookingState = { service: null, duration: null, price: null, date: null, time: null };
+
+// Set min date to tomorrow
+document.getElementById('booking-date').min = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+
+function showStep(id) { document.getElementById(id).classList.remove('hidden'); }
+function hideStep(id) { document.getElementById(id).classList.add('hidden'); }
+
+function bookingSelectService(val) {
+  if (!val) return;
+  const opt = document.querySelector(`#booking-service option[value="${val}"]`);
+  bookingState.service = val;
+  bookingState.duration = parseInt(opt.dataset.duration);
+  bookingState.price = parseInt(opt.dataset.price);
+  showStep('step-2');
+}
+
+function bookingSelectDate(val) {
+  if (!val) return;
+  bookingState.date = val;
+  const slots = generateTimeSlots();
+  const grid = document.getElementById('time-slots');
+  grid.innerHTML = slots.map(t =>
+    `<div class="time-slot" onclick="bookingSelectTime('${t}',this)">${t}</div>`
+  ).join('');
+  showStep('step-3');
+}
+
+function generateTimeSlots() {
+  // Generate slots based on service duration from 10:00 to 21:00
+  const slots = [];
+  const duration = bookingState.duration || 60;
+  for (let h = 10; h <= 21 - duration/60; h++) {
+    for (let m = 0; m < 60; m += duration >= 90 ? 60 : 60) {
+      slots.push(`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`);
+    }
+  }
+  return slots;
+}
+
+function bookingSelectTime(time, el) {
+  document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  bookingState.time = time;
+  showStep('step-4');
+  updateSummary();
+  showStep('step-submit');
+}
+
+function updateSummary() {
+  const dateObj = new Date(bookingState.date + 'T' + bookingState.time);
+  const options = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  document.getElementById('booking-summary').innerHTML =
+    `<strong>บริการ:</strong> ${bookingState.service}<br>` +
+    `<strong>วันที่:</strong> ${dateObj.toLocaleDateString('th-TH', options)}<br>` +
+    `<strong>เวลา:</strong> ${bookingState.time} น. (${bookingState.duration} นาที)<br>` +
+    `<strong>ราคา:</strong> ฿${bookingState.price.toLocaleString()}`;
+}
+
+async function submitBooking() {
+  const name = document.getElementById('booking-name').value.trim();
+  const phone = document.getElementById('booking-phone').value.trim();
+  const lineId = document.getElementById('booking-line').value.trim();
+  const errEl = document.getElementById('booking-error');
+
+  if (!name || !phone) {
+    errEl.textContent = 'กรุณากรอกชื่อและเบอร์โทร / Please fill in name and phone.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  errEl.classList.add('hidden');
+  const payload = {
+    business_slug: BUSINESS_SLUG,
+    service: bookingState.service,
+    booking_date: bookingState.date,
+    booking_time: bookingState.time,
+    customer_name: name,
+    customer_phone: phone,
+    customer_line_id: lineId || null,
+  };
+
+  try {
+    const resp = await fetch(BOOKING_FUNCTION_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!resp.ok) throw new Error('Server error');
+    document.getElementById('booking-form').classList.add('hidden');
+    document.getElementById('booking-confirmation').classList.remove('hidden');
+    document.getElementById('confirmation-details').textContent =
+      `${bookingState.service} — ${bookingState.date} ${bookingState.time} — ${name}`;
+  } catch (e) {
+    errEl.textContent = 'เกิดข้อผิดพลาด กรุณาลองใหม่ / Error, please try again.';
+    errEl.classList.remove('hidden');
+  }
+}
+</script>
+</body>
+</html>
